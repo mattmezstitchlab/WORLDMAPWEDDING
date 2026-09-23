@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>World Wedding Magazine — La Terre comme Première Page</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+--paper:#F5F1E8; --paper2:#EDE7D6; --paper3:#E8E0CC;
+--ink:#1A1814; --ink2:#4E4A42; --muted:#8A8478;
+--line:#D8CFB7; --line2:#C9BFA6;
+--accent:#9A3B26; --accent-d:#7A2E1E; --green:#1E3A32; --gold:#A88C4A;
+--card:#FBF9F3; --shadow:0 30px 80px rgba(26,24,20,.14),0 2px 10px rgba(26,24,20,.08);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;font-weight:400;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+::selection{background:var(--ink);color:var(--paper)}
+::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-track{background:var(--paper2)}::-webkit-scrollbar-thumb{background:var(--ink);border-radius:99px;border:2px solid var(--paper2)}
+.serif{font-family:'Fraunces',serif}
+em.i{font-family:'Fraunces',serif;font-style:italic;font-weight:300}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+.grain{position:fixed;inset:0;pointer-events:none;z-index:200;opacity:.07;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+/* LOADER */
+#loader{position:fixed;inset:0;background:var(--ink);color:var(--paper);z-index:1000;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:22px;transition:opacity .9s ease,visibility .9s}
+#loader.hide{opacity:0;visibility:hidden}
+#loader .mast{font-family:'Fraunces',serif;font-size:clamp(28px,4vw,54px);letter-spacing:.02em;line-height:1;text-align:center}
+#loader .mast span{font-style:italic;font-weight:300;opacity:.7}
+#loader .bar{width:220px;height:1px;background:rgba(245,241,232,.2);position:relative;overflow:hidden}
+#loader .bar i{position:absolute;inset:0;background:var(--paper);transform-origin:left;animation:load 1.8s ease forwards}
+@keyframes load{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+/* HEADER */
+header{position:fixed;top:0;left:0;right:0;z-index:100;height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;background:rgba(245,241,232,.86);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:14px}
+.brand-mark{width:32px;height:32px;border:1px solid var(--ink);border-radius:50%;display:grid;place-items:center;font-family:'Fraunces',serif;font-size:18px}
+.brand-txt{line-height:1.05}
+.brand-txt b{display:block;font-family:'Fraunces',serif;font-weight:500;font-size:15px;letter-spacing:.14em}
+.brand-txt small{font-size:9px;letter-spacing:.32em;color:var(--muted);text-transform:uppercase}
+nav.desk{display:flex;gap:28px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink2)}
+nav.desk a{position:relative;padding:4px 0;transition:.3s}nav.desk a:hover{color:var(--accent)}
+nav.desk a:after{content:'';position:absolute;left:0;bottom:0;height:1px;width:0;background:var(--accent);transition:.3s}nav.desk a:hover:after{width:100%}
+.hbtns{display:flex;gap:10px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:10px;border:1px solid var(--ink);padding:11px 20px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;border-radius:99px;cursor:pointer;transition:.35s;background:transparent;color:var(--ink);white-space:nowrap}
+.btn.solid{background:var(--ink);color:var(--paper)}.btn.solid:hover{background:var(--accent);border-color:var(--accent)}
+.btn.ghost:hover{background:var(--ink);color:var(--paper)}
+.btn.small{padding:8px 14px;font-size:10px}
+/* LEVELS BAR */
+#levels-bar{position:fixed;top:68px;left:0;right:0;z-index:90;background:rgba(245,241,232,.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:8px;padding:10px 28px;overflow-x:auto;scrollbar-width:none}
+#levels-bar::-webkit-scrollbar{display:none}
+.lvl{flex-shrink:0;display:flex;align-items:center;gap:8px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;padding:7px 14px;border-radius:99px;border:1px solid transparent;color:var(--muted);cursor:pointer;transition:.3s;background:transparent}
+.lvl i{width:6px;height:6px;border-radius:50%;background:var(--line2);transition:.3s}
+.lvl.active{background:var(--ink);color:var(--paper);border-color:var(--ink)}.lvl.active i{background:var(--gold)}
+.lvl.done{color:var(--ink);border-color:var(--line)}.lvl.done i{background:var(--accent)}
+.lvl-sep{color:var(--line2);font-size:12px;flex-shrink:0}
+/* HERO */
+#hero-stage{position:relative;min-height:100vh;padding:150px 28px 110px;display:grid;grid-template-columns:440px 1fr 300px;gap:24px;align-items:center;max-width:1720px;margin:0 auto;overflow:hidden}
+#globe-wrap{position:absolute;inset:0;z-index:0}
+#globe{width:100%;height:100%;display:block;cursor:grab;touch-action:pan-y}
+#globe:active{cursor:grabbing}
+#labels{position:absolute;inset:0;pointer-events:none;z-index:2;overflow:hidden}
+.map-label{position:absolute;transform:translate(-50%,-130%);pointer-events:auto;cursor:pointer;display:flex;align-items:center;gap:8px;background:rgba(26,24,20,.92);color:var(--paper);border-radius:99px;padding:7px 13px 7px 9px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;border:1px solid rgba(245,241,232,.18);transition:opacity .4s,transform .3s,background .3s;backdrop-filter:blur(6px)}
+.map-label:hover{background:var(--accent);transform:translate(-50%,-140%) scale(1.05)}
+.map-label b.dot{width:8px;height:8px;border-radius:50%;background:#E8B67A;box-shadow:0 0 0 3px rgba(232,182,122,.25)}
+.map-label.sel{background:var(--accent)}
+.atlas-bg{position:absolute;inset:0;pointer-events:none;background:radial-gradient(900px 700px at 62% 48%,rgba(255,255,255,.9),transparent 60%),radial-gradient(1200px 800px at 50% 50%,transparent 55%,rgba(26,24,20,.06) 100%)}
+.grid-lines{position:absolute;inset:0;pointer-events:none;opacity:.5;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:120px 120px;mask-image:radial-gradient(700px at 60% 50%,black,transparent 75%);-webkit-mask-image:radial-gradient(700px at 60% 50%,black,transparent 75%);opacity:.18}
+/* editorial card */
+#editorial-card{position:relative;z-index:5;background:var(--card);border:1px solid var(--line);border-radius:4px;box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;max-width:460px}
+.ec-top{padding:22px 26px 0;display:flex;justify-content:space-between;align-items:center}
+.kicker{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:10px}
+.kicker:before{content:'';width:28px;height:1px;background:var(--accent);display:inline-block}
+.ec-num{font-family:'Fraunces',serif;font-style:italic;font-size:13px;color:var(--muted)}
+.ec-img{margin:18px 26px 0;height:220px;overflow:hidden;border-radius:2px;position:relative;background:var(--paper2)}
+.ec-img img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s ease}
+#editorial-card:hover .ec-img img{transform:scale(1.05)}
+.ec-img figcaption{position:absolute;left:10px;bottom:10px;background:rgba(26,24,20,.85);color:var(--paper);font-size:9px;letter-spacing:.2em;text-transform:uppercase;padding:6px 10px;border-radius:2px}
+.ec-body{padding:24px 26px 26px}
+.ec-body h1{font-family:'Fraunces',serif;font-weight:400;font-size:clamp(32px,3vw,44px);line-height:.98;letter-spacing:-.02em;margin:10px 0 12px}
+.ec-body h1 em{font-style:italic;font-weight:300;color:var(--accent)}
+.ec-body p{font-size:14px;color:var(--ink2);line-height:1.7}
+.ec-meta{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:18px 0;padding:16px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.ec-meta div b{display:block;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;font-weight:500}
+.ec-meta div span{font-family:'Fraunces',serif;font-size:15px}
+.ec-nav{display:flex;gap:10px;align-items:center;justify-content:space-between}
+.ec-arrows{display:flex;gap:8px}
+.arrow{width:42px;height:42px;border-radius:50%;border:1px solid var(--ink);display:grid;place-items:center;cursor:pointer;transition:.3s;background:transparent;font-size:18px}
+.arrow:hover{background:var(--ink);color:var(--paper)}
+/* index panel */
+#index-panel{position:relative;z-index:5;background:rgba(251,249,243,.92);backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:4px;padding:20px;align-self:center}
+#index-panel h4{font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+#index-panel h3{font-family:'Fraunces',serif;font-size:22px;font-weight:400;margin-bottom:14px}
+.idx-item{display:flex;gap:12px;align-items:center;padding:11px 10px;border-top:1px solid var(--line);cursor:pointer;transition:.3s;border-radius:2px}
+.idx-item:hover,.idx-item.active{background:var(--ink);color:var(--paper)}
+.idx-item img{width:46px;height:46px;object-fit:cover;border-radius:50%;flex-shrink:0;filter:saturate(.85)}
+.idx-item div{flex:1;min-width:0} .idx-item div b{display:block;font-family:'Fraunces',serif;font-size:14px;font-weight:500;line-height:1.1}
+.idx-item div small{font-size:10px;letter-spacing:.16em;text-transform:uppercase;opacity:.6}
+.idx-item .n{font-family:'Fraunces',serif;font-style:italic;font-size:12px;opacity:.5}
+/* hero bottom */
+#hero-bottom{position:absolute;left:28px;right:28px;bottom:18px;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
+.zoombox{display:flex;align-items:center;gap:14px;background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:99px;box-shadow:var(--shadow)}
+.zoombox input{width:160px;accent-color:var(--gold);cursor:pointer}
+.zoombox span{font-size:10px;letter-spacing:.2em;text-transform:uppercase}
+.hint{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:flex;gap:18px;align-items:center}
+.scrolldown{display:flex;align-items:center;gap:10px;font-size:10px;letter-spacing:.24em;text-transform:uppercase;cursor:pointer}
+.scrolldown i{width:36px;height:36px;border:1px solid var(--ink);border-radius:50%;display:grid;place-items:center;animation:bounce 2s infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+/* MAIN SECTIONS */
+main{position:relative;z-index:10;background:var(--paper)}
+section.block{max-width:1280px;margin:0 auto;padding:110px 28px}
+.sec-head{display:flex;gap:20px;align-items:baseline;border-top:1px solid var(--ink);padding-top:18px;margin-bottom:48px}
+.sec-head .no{font-family:'Fraunces',serif;font-style:italic;font-size:14px;color:var(--accent);white-space:nowrap}
+.sec-head h2{font-family:'Fraunces',serif;font-weight:400;font-size:clamp(32px,4.5vw,62px);line-height:.95;letter-spacing:-.02em;flex:1}
+.sec-head p{max-width:320px;font-size:13px;color:var(--ink2)}
+.manifesto-big{font-family:'Fraunces',serif;font-size:clamp(28px,4.2vw,58px);line-height:1.08;letter-spacing:-.02em;font-weight:300}
+.manifesto-big b{font-weight:500}.manifesto-big em{color:var(--accent);font-weight:300}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:60px;margin-top:50px}
+.two p{color:var(--ink2);font-size:15px;margin-bottom:18px}
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:60px}
+.stat{background:var(--card);padding:28px 24px}
+.stat b{font-family:'Fraunces',serif;font-size:42px;font-weight:400;display:block;line-height:1}
+.stat span{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+/* levels interactive */
+#level-grid{display:grid;grid-template-columns:280px 1fr;gap:24px;margin-top:20px}
+#level-list{display:flex;flex-direction:column;gap:8px}
+.lbtn{text-align:left;border:1px solid var(--line);background:var(--card);padding:16px 18px;cursor:pointer;transition:.3s;border-radius:3px;display:flex;justify-content:space-between;align-items:center}
+.lbtn b{font-family:'Fraunces',serif;font-size:18px;font-weight:500}.lbtn small{display:block;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.lbtn.active,.lbtn:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}.lbtn.active small{color:var(--gold)}
+#level-detail{background:var(--ink);color:var(--paper);border-radius:4px;padding:42px;display:grid;grid-template-columns:1fr 360px;gap:36px;align-items:center;min-height:420px}
+#level-detail h3{font-family:'Fraunces',serif;font-size:clamp(28px,3vw,46px);font-weight:400;line-height:1;margin-bottom:14px}
+#level-detail h3 em{color:var(--gold)}
+#level-detail p{color:rgba(245,241,232,.75);font-size:14px;max-width:520px}
+#level-detail ul{margin-top:18px;list-style:none;display:flex;flex-wrap:wrap;gap:8px}
+#level-detail ul li{border:1px solid rgba(245,241,232,.25);border-radius:99px;padding:7px 14px;font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+#level-detail img{width:100%;height:320px;object-fit:cover;border-radius:3px}
+/* architecture */
+.arch{display:grid;grid-template-columns:1fr 80px 1fr;gap:0;align-items:stretch;margin-top:10px}
+.arch-card{border:1px solid var(--line);background:var(--card);border-radius:4px;padding:32px}
+.arch-card.dark{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.arch-card h4{font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+.arch-card.dark h4{color:var(--gold)}
+.arch-card h3{font-family:'Fraunces',serif;font-size:28px;font-weight:400;margin-bottom:16px;line-height:1.05}
+.arch-card ul{list-style:none;margin-top:8px}
+.arch-card ul li{padding:12px 0;border-top:1px solid var(--line);font-size:13px;display:flex;justify-content:space-between;gap:12px}
+.arch-card.dark ul li{border-color:rgba(245,241,232,.15)}
+.arch-card ul li span:last-child{font-size:10px;letter-spacing:.16em;text-transform:uppercase;opacity:.55;white-space:nowrap}
+.arch-mid{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:var(--accent)}
+.arch-mid .line{width:1px;flex:1;background:var(--line2);min-height:60px}
+.pulse{width:44px;height:44px;border-radius:50%;border:1px solid var(--accent);display:grid;place-items:center;animation:pl 2s infinite}
+@keyframes pl{0%{box-shadow:0 0 0 0 rgba(154,59,38,.3)}100%{box-shadow:0 0 0 18px rgba(154,59,38,0)}}
+/* parcours */
+.journey{display:flex;gap:18px;overflow-x:auto;padding:10px 4px 24px;scroll-snap-type:x mandatory}
+.jcard{flex:0 0 320px;scroll-snap-align:start;background:var(--card);border:1px solid var(--line);border-radius:4px;overflow:hidden;transition:.4s}
+.jcard:hover{transform:translateY(-6px);box-shadow:var(--shadow)}
+.jcard .ph{height:210px;overflow:hidden;position:relative}
+.jcard .ph img{width:100%;height:100%;object-fit:cover;transition:1s}.jcard:hover .ph img{transform:scale(1.07)}
+.jcard .ph span{position:absolute;top:12px;left:12px;background:var(--paper);border-radius:99px;padding:6px 12px;font-size:9px;letter-spacing:.2em;text-transform:uppercase}
+.jcard .tx{padding:20px}
+.jcard .tx small{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent)}
+.jcard .tx h4{font-family:'Fraunces',serif;font-size:22px;font-weight:500;margin:6px 0 8px;line-height:1.1}
+.jcard .tx p{font-size:13px;color:var(--ink2)}
+.jcard .tx .go{margin-top:14px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;display:flex;justify-content:space-between;border-top:1px solid var(--line);padding-top:12px;cursor:pointer}
+.voyage-banner{margin-top:26px;background:var(--green);color:var(--paper);border-radius:4px;padding:36px;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
+.voyage-banner h3{font-family:'Fraunces',serif;font-size:clamp(22px,2.6vw,34px);font-weight:400}
+/* edition */
+#edition{background:var(--ink);color:var(--paper);max-width:none}
+#edition .inner{max-width:1280px;margin:0 auto;padding:110px 28px}
+#edition .sec-head{border-color:rgba(245,241,232,.3)}
+#edition .sec-head p{color:rgba(245,241,232,.6)}
+.ed-hero{display:grid;grid-template-columns:1.1fr .9fr;gap:50px;align-items:end;margin-bottom:60px}
+.ed-hero h2{font-family:'Fraunces',serif;font-size:clamp(44px,6vw,96px);line-height:.9;letter-spacing:-.03em;font-weight:400}
+.ed-hero h2 em{font-weight:300;color:var(--gold)}
+.ed-hero p{color:rgba(245,241,232,.7);font-size:15px;max-width:420px}
+.ed-hero .bigimg{grid-column:1/-1;height:52vh;min-height:360px;border-radius:4px;overflow:hidden;position:relative}
+.ed-hero .bigimg img{width:100%;height:100%;object-fit:cover}
+.ed-hero .bigimg div{position:absolute;left:24px;bottom:24px;right:24px;display:flex;justify-content:space-between;align-items:end;gap:20px}
+.ed-hero .bigimg div h4{font-family:'Fraunces',serif;font-size:clamp(20px,2.5vw,34px);text-shadow:0 2px 20px rgba(0,0,0,.5)}
+.chap{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.ch{position:relative;height:440px;border-radius:4px;overflow:hidden;cursor:pointer;background:#000}
+.ch img{width:100%;height:100%;object-fit:cover;opacity:.85;transition:1s}
+.ch:hover img{opacity:1;transform:scale(1.06)}
+.ch div{position:absolute;inset:auto 0 0 0;padding:24px;background:linear-gradient(transparent,rgba(0,0,0,.82));color:#fff}
+.ch div small{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold)}
+.ch div h4{font-family:'Fraunces',serif;font-size:24px;font-weight:400}
+/* DA */
+.da-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:10px}
+.da-card{border:1px solid var(--line);background:var(--card);border-radius:4px;padding:28px}
+.da-card h4{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+.sw{display:flex;height:72px;border-radius:3px;overflow:hidden;margin-bottom:8px}
+.sw i{flex:1}
+.type-spec{font-family:'Fraunces',serif;font-size:46px;line-height:1}
+.do-dont{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}
+.dd{padding:26px;border-radius:4px;border:1px solid var(--line)}
+.dd.ok{background:#EAF0E8}.dd.no{background:#F6E9E3}
+.dd b{font-size:11px;letter-spacing:.2em;text-transform:uppercase}
+.dd p{font-size:13px;margin-top:8px;color:var(--ink2)}
+/* conclusion + footer */
+#final{text-align:center;padding:120px 28px;max-width:900px;margin:0 auto}
+#final h2{font-family:'Fraunces',serif;font-size:clamp(36px,5vw,72px);line-height:.95;font-weight:400}
+#final h2 em{color:var(--accent)}
+footer{background:var(--ink);color:var(--paper);padding:60px 28px 30px}
+.foot{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr;gap:30px}
+.foot h5{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+.foot a,.foot p{display:block;font-size:13px;color:rgba(245,241,232,.7);margin-bottom:8px}
+.foot-big{font-family:'Fraunces',serif;font-size:28px;line-height:1}
+/* reveal */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .9s ease,transform .9s ease}
+.reveal.visible{opacity:1;transform:none}
+@media(max-width:1200px){#hero-stage{grid-template-columns:420px 1fr}#index-panel{display:none}}
+@media(max-width:900px){
+nav.desk{display:none}
+#hero-stage{grid-template-columns:1fr;padding:140px 16px 120px;min-height:auto}
+#editorial-card{max-width:none}
+.ec-img{height:180px}.hint{display:none}
+.two,.arch,#level-grid,.ed-hero,.chap,.da-grid,.do-dont,.foot{grid-template-columns:1fr!important}
+.arch-mid{flex-direction:row;padding:16px 0}.arch-mid .line{height:1px;width:100%;min-height:0}
+#level-detail{grid-template-columns:1fr;padding:26px}#level-detail img{height:220px}
+.stat-row{grid-template-columns:1fr 1fr}
+header{padding:0 16px}#levels-bar{padding:10px 16px}#hero-bottom{left:16px;right:16px}
+section.block{padding:70px 16px}
+}
+</style>
+</head>
+<body>
+<div class="grain"></div>
+<div id="loader"><div class="mast">WORLD WEDDING<br><span>Magazine — Atlas vivant</span></div><div class="bar"><i></i></div><div style="font-size:10px;letter-spacing:.3em;text-transform:uppercase;opacity:.6">Chargement de la carte éditoriale</div></div>
+
+<header>
+<div class="brand"><div class="brand-mark">W</div><div class="brand-txt"><b>WORLD WEDDING</b><small>Magazine · Atlas mondial</small></div></div>
+<nav class="desk"><a href="#hero-stage">Monde</a><a href="#principe">Un seul monde</a><a href="#architecture">Architecture</a><a href="#parcours">Parcours</a><a href="#edition">Édition N°1</a><a href="#direction">Direction</a></nav>
+<div class="hbtns"><a class="btn ghost small" href="#architecture">Étude UX</a><a class="btn solid small" href="#edition">Édition Broderie</a></div>
+</header>
+
+<div id="levels-bar" aria-label="Niveaux de navigation">
+<button class="lvl active" data-l="0"><i></i>Monde</button><span class="lvl-sep">·</span>
+<button class="lvl" data-l="1"><i></i>Continent</button><span class="lvl-sep">·</span>
+<button class="lvl" data-l="2"><i></i>Pays</button><span class="lvl-sep">·</span>
+<button class="lvl" data-l="3"><i></i>Région</button><span class="lvl-sep">·</span>
+<button class="lvl" data-l="4"><i></i>Ville</button><span class="lvl-sep">·</span>
+<button class="lvl" data-l="5"><i></i>Lieu</button><span class="lvl-sep">·</span>
+<button class="lvl" data-l="6"><i></i>Histoire</button><span class="lvl-sep">·</span>
+<button class="lvl" data-l="7"><i></i>Objet</button>
+</div>
+
+<section id="hero-stage">
+<div id="globe-wrap"><div class="grid-lines"></div><canvas id="globe"></canvas><div class="atlas-bg"></div><div id="labels"></div></div>
+
+<aside id="editorial-card" class="reveal visible">
+<div class="ec-top"><div class="kicker" id="kicker-level">Monde · Atlas vivant</div><div class="ec-num" id="ec-num">01 / 08</div></div>
+<figure class="ec-img"><img id="img-place" src="https://images.unsplash.com/photo-1528459801416-a9e53bbf4e17?q=80&w=1000&auto=format&fit=crop" alt="Broderie"><figcaption id="cap-place">Édition inaugurale — Le fil comme langue</figcaption></figure>
+<div class="ec-body">
+<h1 id="title-place">La Terre est la <em>première page.</em></h1>
+<p id="desc-place">World Wedding Magazine ne s’ouvre plus sur une homepage. Il s’ouvre sur le monde. Tournez l’atlas, zoomez du continent à l’objet : chaque niveau révèle un contenu réel — territoires, familles, gestes, textiles.</p>
+<div class="ec-meta"><div><b>Territoire</b><span id="m-ter">8 récits</span></div><div><b>Niveau</b><span id="m-niv">Monde</span></div><div><b>Fils reliés</b><span id="m-fil">124</span></div></div>
+<div class="ec-nav"><div style="display:flex;gap:10px"><button class="btn solid small" id="btn-voyage">▶ Lancer le voyage</button><button class="btn ghost small" id="btn-zoom">Zoomer ↓</button></div><div class="ec-arrows"><button class="arrow" id="prev">←</button><button class="arrow" id="next">→</button></div></div>
+</div>
+</aside>
+
+<div style="position:relative;z-index:4;align-self:center;justify-self:center;text-align:center;pointer-events:none;display:flex;flex-direction:column;align-items:center;gap:10px" id="center-hint">
+<div style="font-family:'Fraunces',serif;font-style:italic;font-size:13px;letter-spacing:.1em;color:var(--muted)">— atlas éditorial, calme, précis —</div>
+<div style="font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted)">Glisser · Molette · Cliquer un lieu</div>
+</div>
+
+<aside id="index-panel"><h4>Index vivant — Édition N°1</h4><h3>Broderies du monde</h3><div id="idx-list"></div><div style="margin-top:14px;font-size:11px;color:var(--ink2)">8 lieux · 8 histoires · 24 objets · 6h de film</div></aside>
+
+<div id="hero-bottom">
+<div class="zoombox"><span>Monde</span><input type="range" id="zoom" min="0" max="7" step="0.01" value="0"><span>Objet</span><span id="zoom-lab" style="background:var(--gold);color:var(--ink);padding:4px 10px;border-radius:99px">Niv.0</span></div>
+<div class="hint"><span>◐ Pas de points lumineux</span><span>◑ Pas de dashboard</span><span>◒ Un seul monde fluide</span></div>
+<div class="scrolldown" onclick="document.getElementById('manifeste').scrollIntoView({behavior:'smooth'})"><span>Lire l’étude design</span><i>↓</i></div>
+</div>
+</section>
+
+<main>
+<section class="block reveal" id="manifeste">
+<div class="sec-head"><span class="no">01 — Manifeste</span><h2>Le mariage est le point de départ. <em class="i">Le monde est le contenu.</em></h2><p>Exploration design / UX / art direction — avant tout développement technique.</p></div>
+<p class="manifesto-big">World Wedding Magazine n’est plus un site de mariage. C’est un <b>magazine mondial vivant</b> qui explore <em>territoires, villes, lieux, familles, traditions, artisans, broderies, coffrets, photographies, archives</em> — à partir d’une <b>map 3D éditoriale</b>.</p>
+<div class="two"><div><p><b>Ni globe futuriste, ni carte Google, ni gaming, ni dashboard.</b> La 3D recherchée est calme, contemporaine, internationale : un atlas haut de gamme papier & encre, où l’on sent immédiatement que <i>tout est relié</i>.</p><p>La map devient <b>homepage, index, table des matières, moteur de découverte et système de relations</b>. On ne change pas de page : on s’approche. Le zoom révèle le réel.</p></div><div><p>→ <b>MONDE → CONTINENT → PAYS → RÉGION → VILLE → LIEU → HISTOIRE → OBJET.</b> Huit niveaux, une seule expérience continue. L’architecture actuelle du magazine est conservée — la map est une <b>nouvelle couche d’entrée</b> qui l’irrigue.</p><p>→ L’édition inaugurale prend la <b>broderie et le patrimoine textile</b> comme fil conducteur mondial : même geste, mille langues.</p></div></div>
+<div class="stat-row"><div class="stat"><b>1</b><span>Seul monde — zéro rupture</span></div><div class="stat"><b>8</b><span>Niveaux de zoom éditorial</span></div><div class="stat"><b>∞</b><span>Relations tissées entre récits</span></div><div class="stat"><b>0</b><span>Cliché mariage · superflu</span></div></div>
+</section>
+
+<section class="block reveal" id="principe">
+<div class="sec-head"><span class="no">02 — Principe</span><h2>Un seul monde, <em class="i">qui se révèle en zoomant.</em></h2><p>Chaque niveau n’est pas une page : c’est une distance. Cliquez les niveaux.</p></div>
+<div id="level-grid"><div id="level-list"></div><div id="level-detail"><div><div class="kicker" style="color:var(--gold)" id="ld-kick">Niveau 0 — Monde</div><h3 id="ld-title">La Terre comme <em>couverture.</em></h3><p id="ld-desc">Vue atlas complète, rotation lente. On y lit les grandes routes textiles, les continents-éditions, la promesse : tout est relié.</p><ul id="ld-tags"><li>Vue d’ensemble</li><li>Routes</li><li>Continents</li></ul><div style="margin-top:22px;display:flex;gap:10px"><button class="btn solid small" style="border-color:var(--paper);background:var(--paper);color:var(--ink)" onclick="flyToLevel(0)">Voir sur la map ↑</button></div></div><img id="ld-img" src="https://images.unsplash.com/photo-1451187580459-43490279c429?q=80&w=800&auto=format&fit=crop" alt=""></div></div>
+</section>
+
+<section class="block reveal" id="architecture">
+<div class="sec-head"><span class="no">03 — Architecture</span><h2>Conserver le socle, <em class="i">ajouter l’entrée-monde.</em></h2><p>Pas de refonte brutale : la map coiffe et relie l’existant.</p></div>
+<div class="arch"><div class="arch-card"><h4>Socle conservé — Magazine actuel</h4><h3>L’éditorial qui existe déjà.</h3><ul><li><span>Articles / Récits / Interviews</span><span>conservé</span></li><li><span>Villes / Lieux / Prestataires</span><span>conservé</span></li><li><span>Galeries photo / Vidéo / Archives</span><span>conservé</span></li><li><span>Recherche / Tags / Catégories</span><span>conservé</span></li><li><span>Fiches artisans / Objets / Coffrets</span><span>conservé</span></li></ul></div><div class="arch-mid"><div class="line"></div><div class="pulse">⇄</div><div style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;text-align:center">Liaison<br>géolocalisée</div><div class="line"></div></div><div class="arch-card dark"><h4>Nouvelle couche — Map 3D monde</h4><h3>L’index vivant qui relie tout.</h3><ul><li><span>Homepage = Globe éditorial</span><span>nouveau</span></li><li><span>Breadcrumb 8 niveaux fluides</span><span>nouveau</span></li><li><span>Fils de relations entre contenus</span><span>nouveau</span></li><li><span>Zoom = navigation (pas de pages)</span><span>nouveau</span></li><li><span>Mode Édition / Atlas / Journal</span><span>nouveau</span></li></ul></div></div>
+<p style="margin-top:22px;font-size:13px;color:var(--ink2);max-width:760px">Exemple de liaison : la fiche existante <b>« Dar Tazi, Fès »</b> reste identique, mais devient atteignable par <i>Monde › Afrique › Maroc › Fès-Meknès › Fès › Dar Tazi › Histoire d’Aïcha › Coffret brodé</i> — et affiche désormais « récits voisins » (Jaipur, Ramallah) tissés par le même point de broderie.</p>
+</section>
+
+<section class="block reveal" id="parcours">
+<div class="sec-head"><span class="no">04 — Parcours</span><h2>Du monde à l’objet : <em class="i">un voyage, pas un tunnel.</em></h2><p>Faites défiler : le parcours type, sans rupture, avec respiration éditoriale.</p></div>
+<div class="journey" id="journey"></div>
+<div class="voyage-banner"><div><div style="font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold)">Démonstration interactive</div><h3>Voyez la fluidité : lancez le voyage animé sur le globe.</h3><p style="opacity:.7;font-size:13px;max-width:560px">La caméra vole de lieu en lieu, la fiche éditoriale suit, le breadcrumb progresse. C’est exactement la sensation recherchée : un seul monde qui s’approche.</p></div><div style="display:flex;gap:10px"><button class="btn small" style="border-color:var(--paper);color:var(--paper)" id="btn-voyage2">▶ Voyage 40 sec</button><button class="btn small" style="background:var(--gold);border-color:var(--gold);color:var(--ink)" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Retour map</button></div></div>
+</section>
+
+<section id="edition"><div class="inner">
+<div class="sec-head reveal"><span class="no" style="color:var(--gold)">05 — Édition inaugurale</span><h2 style="color:var(--paper)">Broderie & patrimoine <em class="i" style="color:var(--gold)">textile.</em></h2><p>Le fil comme première langue mondiale du mariage. Six chapitres, un même geste.</p></div>
+<div class="ed-hero reveal"><div><div class="kicker" style="color:var(--gold)">World Wedding Magazine N°1 — Hiver</div><h2>Le monde tient <em>à un fil.</em></h2></div><p>Ni blanc, ni rose, ni cliché. Des mains, des matières, des symboles. Chaque broderie raconte une alliance : protéger, transmettre, appartenir. Explorez depuis la map ou depuis ce sommaire — c’est le même monde.<br><br><button class="btn small" style="border-color:var(--paper);color:var(--paper);margin-top:12px" onclick="window.scrollTo({top:0,behavior:'smooth'})">Explorer depuis le globe ↑</button></p><div class="bigimg"><img src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?q=80&w=1600&auto=format&fit=crop" alt="Atelier textile"><div><h4>Chapitre d’ouverture — Les mains qui brodent, de Fès à Kyoto.</h4><span style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;background:var(--paper);color:var(--ink);padding:8px 14px;border-radius:99px;white-space:nowrap">42 pages · Film 18 min</span></div></div></div>
+<div class="chap reveal" id="chap-grid"></div>
+</div></section>
+
+<section class="block reveal" id="direction">
+<div class="sec-head"><span class="no">06 — Art direction</span><h2>Premium, éditorial, <em class="i">international.</em></h2><p>Beaucoup d’espace, grandes images, typographie forte. Zéro superflu.</p></div>
+<div class="da-grid">
+<div class="da-card"><h4>Palette — Papier & encre</h4><div class="sw"><i style="background:#F5F1E8;border:1px solid #D8CFB7"></i><i style="background:#1A1814"></i><i style="background:#9A3B26"></i><i style="background:#1E3A32"></i><i style="background:#A88C4A"></i></div><p style="font-size:12px;color:var(--ink2)">Ivoire #F5F1E8 · Encre #1A1814 · Terracotta #9A3B26 · Vert atelier #1E3A32 · Or fil #A88C4A. Jamais de rose dragée, jamais de néon.</p></div>
+<div class="da-card"><h4>Typographie — Forte & calme</h4><div class="type-spec">Fraunces <em class="i" style="color:var(--accent)">Aa</em></div><div style="font-size:12px;letter-spacing:.18em;text-transform:uppercase;margin-top:8px">Titres serif · Textes Inter · Interlettrage large pour kickers</div></div>
+<div class="da-card"><h4>Matière 3D — Atlas, pas jeu vidéo</h4><p style="font-size:13px;color:var(--ink2)">Globe papier mat, continents encre avec relief subtil, lignes de graticule à 8% d’opacité, halo chaud (pas bleu), marqueurs terracotta discrets, labels pilule encre. Rotation lente 0.04 rad/s, zoom amorti, pas d’explosion de particules.</p></div>
+</div>
+<div class="do-dont"><div class="dd ok"><b>✓ À faire</b><p>Grandes marges, une seule image forte par écran, légendes sobres, grain papier, transitions lentes (800ms), photographie documentaire, vides assumés.</p></div><div class="dd no"><b>✕ À éviter</b><p>Cœurs, alliances 3D, brush script, rose poudré, milliers de points lumineux, dashboard KPI,阅读 pop-ups, ombres portées dures, icônes wedding.</p></div></div>
+</section>
+
+<section id="final" class="reveal"><div class="kicker" style="justify-content:center">Conclusion — Piste recommandée</div><h2>Transformez le monde <em>en magazine</em> en gardant <em class="i">la fluidité.</em></h2><p style="color:var(--ink2);margin:18px auto;max-width:640px;font-size:15px">Phase 1 : cette map-atlas comme homepage + breadcrumb 8 niveaux + édition Broderie comme preuve. Phase 2 : lier tout l’existant par géolocalisation. Phase 3 : ouvrir aux familles & artisans qui épinglent leurs histoires.</p><div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:26px"><button class="btn solid" onclick="window.scrollTo({top:0,behavior:'smooth'})">Revenir au monde ↑</button><a class="btn ghost" href="#edition">Lire l’édition N°1</a></div></section>
+</main>
+
+<footer><div class="foot"><div><div class="foot-big">World Wedding<br><em class="i" style="color:var(--gold)">Magazine</em></div><p style="margin-top:12px">Étude design — Map 3D mondiale comme entrée principale. La Terre est la première page.</p></div><div><h5>Explorer</h5><a href="#hero-stage">Monde</a><a href="#principe">Un seul monde</a><a href="#parcours">Parcours</a><a href="#edition">Édition Broderie</a></div><div><h5>Édition N°1</h5><a>Fès — Bleu indigo</a><a>Jaipur — Zardozi</a><a>Venise — Dentelle</a><a>Kyoto — Sashiko</a></div><div><h5>Principes</h5><p>Calme · Précis · Premium</p><p>Pas de clichés mariage</p><p>Contenus réels au zoom</p><p style="margin-top:16px;opacity:.5;font-size:11px">© 2026 WWM — Exploration UX</p></div></div></footer>
+
+<script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js"}}</script>
+<script type="module">
+import * as THREE from 'three';
+setTimeout(()=>document.getElementById('loader').classList.add('hide'),1900);
+setTimeout(()=>document.getElementById('loader').classList.add('hide'),4000);
+
+/* ---------- DATA ---------- */
+const DEST=[
+{city:"Fès",country:"Maroc",cont:"Afrique",lat:34.03,lon:-5.0,cat:"Broderie de Fès",col:"#2B4A7A",img:"https://images.unsplash.com/photo-1596040033229-a9821ebd058d?q=80&w=800&auto=format&fit=crop",desc:"Point compté bleu indigo sur lin. Dans la médina, Aïcha transmet à sa fille le coffret de mariage brodé par sa grand-mère.",ter:"Fès-Meknès",lieu:"Dar Tazi",hist:"Aïcha, 3 générations",obj:"Coffret indigo"},
+{city:"Jaipur",country:"Inde",cont:"Asie",lat:26.91,lon:75.78,cat:"Zardozi d'or",col:"#A88C4A",img:"https://images.unsplash.com/photo-1610030469983-98e550d6193c?q=80&w=800&auto=format&fit=crop",desc:"Fil d’or couché sur soie. Le voile de Meera pèse 4kg de métal précieux — une banque portable, une archive familiale.",ter:"Rajasthan",lieu:"Atelier Johari",hist:"Meera & les maîtres",obj:"Voile zardozi"},
+{city:"Venise",country:"Italie",cont:"Europe",lat:45.44,lon:12.33,cat:"Dentelle de Burano",col:"#EDE7D6",img:"https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=800&auto=format&fit=crop",desc:"Le vide comme ornement. À Burano, la dentelle de mariage se tisse sans métier, à l’aiguille, 800 heures pour un voile.",ter:"Vénétie",lieu:"Maison Burano",hist:"Elena, merlettaia",obj:"Voile point neige"},
+{city:"Kyoto",country:"Japon",cont:"Asie",lat:35.01,lon:135.76,cat:"Sashiko",col:"#1E3A32",img:"https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=800&auto=format&fit=crop",desc:"Petits points qui réparent et relient. Le shiromuku de Yuki porte les sashiko de deuil et de fête de sa lignée.",ter:"Kansai",lieu:"Atelier Nishijin",hist:"Yuki, réparatrice",obj:"Shiromuku cousu"},
+{city:"Ramallah",country:"Palestine",cont:"Asie",lat:31.9,lon:35.2,cat:"Tatreez",col:"#9A3B26",img:"https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=800&auto=format&fit=crop",desc:"Croix rouge sur toile : chaque village a sa carte. La robe de Layla est un passeport brodé, lisible par les aînées.",ter:"Cisjordanie",lieu:"Coopérative",hist:"Layla, gardienne",obj:"Robe tatreez"},
+{city:"Oaxaca",country:"Mexique",cont:"Amérique",lat:17.07,lon:-96.72,cat:"Tenango",col:"#C96A2B",img:"https://images.unsplash.com/photo-1512813195386-6cf811ad3542?q=80&w=800&auto=format&fit=crop",desc:"Faune onirique brodée pour protéger le foyer. Le huipil de Sofia raconte le mariage comme écosystème.",ter:"Valles Centrales",lieu:"Casa Tenango",hist:"Sofia, dessinatrice",obj:"Huipil faune"},
+{city:"Istanbul",country:"Turquie",cont:"Europe / Asie",lat:41.0,lon:28.97,cat:"Oya au fuseau",col:"#7A2E1E",img:"https://images.unsplash.com/photo-1522673607200-164d1b6ce486?q=80&w=800&auto=format&fit=crop",desc:"Dentelle-épine au bord du foulard. Chaque fleur oya est un message amoureux codé offert le jour des noces.",ter:"Bosphore",lieu:"Grand Bazar 12",hist:"Elif, dentellière",obj:"Foulard oya"},
+{city:"Paris",country:"France",cont:"Europe",lat:48.85,lon:2.35,cat:"Haute broderie",col:"#111111",img:"https://images.unsplash.com/photo-1558769132-cb1aea458c5e?q=80&w=800&auto=format&fit=crop",desc:"Lunéville et crochet : l’atelier Lesage dialogue avec Fès, Jaipur et Kyoto. La mondialisation du point.",ter:"Île-de-France",lieu:"Atelier Lesage",hist:"Maison & archives",obj:"Échantillonnier"}
+];
+const LEVELS=[
+{name:"Monde",sub:"Couverture",d:"Vue atlas complète, rotation lente. Routes textiles, continents-éditions.",tags:["Vue d’ensemble","Routes","Continents"],img:"https://images.unsplash.com/photo-1451187580459-43490279c429?q=80&w=800&auto=format&fit=crop"},
+{name:"Continent",sub:"Chapitre",d:"L’Afrique, l’Asie, l’Europe… Chaque continent devient un chapitre avec sa couleur fil.",tags:["Chapitre","Couleur","Carte"],img:"https://images.unsplash.com/photo-1526772662000-3f88f10405ff?q=80&w=800&auto=format&fit=crop"},
+{name:"Pays",sub:"Titre",d:"Le pays cadre le droit, le rituel, la fête. Drapeau absent : place à la matière.",tags:["Rituel","Cadre","Fête"],img:"https://images.unsplash.com/photo-1539020140153-e479b8c22e70?q=80&w=800&auto=format&fit=crop"},
+{name:"Région",sub:"Contexte",d:"Grains, teintures, dialectes du point. La région explique le pourquoi du motif.",tags:["Teinture","Dialecte","Motif"],img:"https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?q=80&w=800&auto=format&fit=crop"},
+{name:"Ville",sub:"Personnages",d:"La ville amène les ateliers, marchés, familles. Index vivant et géolocalisé.",tags:["Ateliers","Marchés","Familles"],img:"https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?q=80&w=800&auto=format&fit=crop"},
+{name:"Lieu",sub:"Scène",d:"Dar, atelier, maison : visite immersive photo + vidéo + son d’atelier.",tags:["Visite","Photo","Son"],img:"https://images.unsplash.com/photo-1518998053901-5348d3961a04?q=80&w=800&auto=format&fit=crop"},
+{name:"Histoire",sub:"Récit",d:"Portrait long format : Aïcha, Meera, Yuki… Le mariage raconté par celles qui brodent.",tags:["Portrait","Long format","Film"],img:"https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=800&auto=format&fit=crop"},
+{name:"Objet",sub:"Trésor",d:"Coffret, voile, robe : fiche objet macro, archives, gestes, transmission.",tags:["Macro","Archive","Geste"],img:"https://images.unsplash.com/photo-1610701596007-11502861dcfa?q=80&w=800&auto=format&fit=crop"}];
+const CHAPS=[
+{t:"01 · Fès — Le bleu qui protège",d:"Indigo, point compté, coffret de transmission.",img:"https://images.unsplash.com/photo-1596040033229-a9821ebd058d?q=80&w=800&auto=format&fit=crop"},
+{t:"02 · Jaipur — L’or qui pèse",d:"Zardozi, soie, banque portable des mariées.",img:"https://images.unsplash.com/photo-1610030469983-98e550d6193c?q=80&w=800&auto=format&fit=crop"},
+{t:"03 · Venise — Le vide qui orne",d:"Dentelle aiguille, 800h pour un voile.",img:"https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=800&auto=format&fit=crop"},
+{t:"04 · Kyoto — Le point qui répare",d:"Sashiko, deuil et fête sur même toile.",img:"https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=800&auto=format&fit=crop"},
+{t:"05 · Ramallah — La carte qui se porte",d:"Tatreez, chaque croix est un village.",img:"https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=800&auto=format&fit=crop"},
+{t:"06 · Oaxaca — Le rêve qui protège",d:"Tenango, faune brodée pour le foyer.",img:"https://images.unsplash.com/photo-1512813195386-6cf811ad3542?q=80&w=800&auto=format&fit=crop"}];
+
+/* ---------- UI BUILD ---------- */
+const idxList=document.getElementById('idx-list');
+DEST.forEach((d,i)=>{
+const el=document.createElement('div');el.className='idx-item'+(i===0?'':'');el.innerHTML=`<img src="${d.img}" alt=""><div><b>${d.city} — ${d.cat}</b><small>${d.country} · ${d.cont}</small></div><span class="n">0${i+1}</span>`;
+el.onclick=()=>{selectDest(i,true);};idxList.appendChild(el);
+});
+const jWrap=document.getElementById('journey');
+const steps=[["Monde","La couverture","On survole l’atlas, les fils relient déjà Fès à Kyoto.","https://images.unsplash.com/photo-1451187580459-43490279c429?q=80&w=600&auto=format&fit=crop"],["Continent · Afrique","Le chapitre","L’Afrique s’approche, le Maroc s’illumine.","https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?q=80&w=600&auto=format&fit=crop"],["Pays · Maroc","Le cadre","Rituel, droit, fête : le contexte apparaît.","https://images.unsplash.com/photo-1539020140153-e479b8c22e70?q=80&w=600&auto=format&fit=crop"],["Ville · Fès","Les personnages","Médina, teinturiers, ateliers : l’index s’ouvre.","https://images.unsplash.com/photo-1597212618440-806262de4f6b?q=80&w=600&auto=format&fit=crop"],["Lieu · Dar Tazi","La scène","Visite immersive, son de l’atelier, lumière.","https://images.unsplash.com/photo-1518998053901-5348d3961a04?q=80&w=600&auto=format&fit=crop"],["Histoire · Aïcha","Le récit","Trois générations autour d’un même coffret.","https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=600&auto=format&fit=crop"],["Objet · Coffret","Le trésor","Macro du point, archive, geste transmis.","https://images.unsplash.com/photo-1610701596007-11502861dcfa?q=80&w=600&auto=format&fit=crop"]];
+steps.forEach((s,i)=>{const c=document.createElement('div');c.className='jcard';c.innerHTML=`<div class="ph"><img src="${s[3]}"><span>Étape ${i+1}</span></div><div class="tx"><small>${s[0]}</small><h4>${s[1]}</h4><p>${s[2]}</p><div class="go" data-i="${i}"><span>Voir sur la map</span><span>→</span></div></div>`;jWrap.appendChild(c);});
+jWrap.querySelectorAll('.go').forEach(g=>g.onclick=()=>{window.scrollTo({top:0,behavior:'smooth'});setTimeout(()=>{if(g.dataset.i==0)flyToLevel(0);else selectDest(0,true);setLevel(parseInt(g.dataset.i));},600);});
+const chapGrid=document.getElementById('chap-grid');
+CHAPS.forEach(c=>{const d=document.createElement('div');d.className='ch';d.innerHTML=`<img src="${c.img}" loading="lazy"><div><small>Édition N°1</small><h4>${c.t}</h4><p style="font-size:12px;opacity:.75">${c.d}</p></div>`;d.onclick=()=>{window.scrollTo({top:0,behavior:'smooth'});};chapGrid.appendChild(d);});
+const lvlList=document.getElementById('level-list');
+LEVELS.forEach((l,i)=>{const b=document.createElement('button');b.className='lbtn'+(i===0?' active':'');b.innerHTML=`<span><small>Niv.${i} — ${l.sub}</small><b>${l.name}</b></span><span>→</span>`;b.onclick=()=>setLevel(i);lvlList.appendChild(b);});
+
+/* ---------- STATE ---------- */
+let curDest=0, curLevel=0;
+const titleEl=document.getElementById('title-place'),descEl=document.getElementById('desc-place'),imgEl=document.getElementById('img-place'),capEl=document.getElementById('cap-place'),kickEl=document.getElementById('kicker-level'),numEl=document.getElementById('ec-num'),mTer=document.getElementById('m-ter'),mNiv=document.getElementById('m-niv'),mFil=document.getElementById('m-fil');
+function setLevel(i){
+curLevel=i;
+document.querySelectorAll('#levels-bar .lvl').forEach((b,bi)=>{b.classList.toggle('active',bi===i);b.classList.toggle('done',bi<i);});
+document.querySelectorAll('#level-list .lbtn').forEach((b,bi)=>b.classList.toggle('active',bi===i));
+const L=LEVELS[i];
+document.getElementById('ld-kick').textContent=`Niveau ${i} — ${L.name}`;
+document.getElementById('ld-title').innerHTML=L.name+` <em>${L.sub}.</em>`;
+document.getElementById('ld-desc').textContent=L.d;
+document.getElementById('ld-img').src=L.img;
+document.getElementById('ld-tags').innerHTML=L.tags.map(t=>`<li>${t}</li>`).join('');
+document.getElementById('zoom').value=i;document.getElementById('zoom-lab').textContent='Niv.'+i;
+mNiv.textContent=L.name;numEl.textContent=`0${i+1} / 08`;
+if(typeof flyToLevel==='function' && arguments[1]!==false){/* external */}
+}
+document.querySelectorAll('#levels-bar .lvl').forEach(b=>b.onclick=()=>{const i=+b.dataset.l;setLevel(i);flyToLevel(i);});
+document.getElementById('zoom').oninput=e=>{setLevel(Math.round(+e.target.value));flyToLevel(curLevel);};
+function selectDest(i,fly){
+curDest=i;const d=DEST[i];
+titleEl.innerHTML=`${d.city} — <em>${d.cat}.</em>`;
+descEl.textContent=d.desc;imgEl.src=d.img;capEl.textContent=`${d.city}, ${d.country} — ${d.lieu}`;
+kickEl.textContent=`${d.cont} · ${d.country} · Édition N°1`;
+mTer.textContent=d.city;mFil.textContent=(40+i*17)+' fils';
+document.querySelectorAll('.idx-item').forEach((el,ei)=>el.classList.toggle('active',ei===i));
+document.querySelectorAll('.map-label').forEach((el,ei)=>el.classList.toggle('sel',ei===i));
+if(fly&&window._flyTo)window._flyTo(d.lat,d.lon,2.25);
+setLevel(4);
+}
+document.getElementById('prev').onclick=()=>selectDest((curDest+DEST.length-1)%DEST.length,true);
+document.getElementById('next').onclick=()=>selectDest((curDest+1)%DEST.length,true);
+document.getElementById('btn-zoom').onclick=()=>{const n=Math.min(7,curLevel+1);setLevel(n);flyToLevel(n);};
+
+/* ---------- THREE GLOBE ---------- */
+const canvas=document.getElementById('globe'),wrap=document.getElementById('globe-wrap'),labelsBox=document.getElementById('labels');
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(38,1,.1,100);camera.position.set(0,0,4.4);
+scene.add(new THREE.AmbientLight(0xfff8ec,1.15));
+const key=new THREE.DirectionalLight(0xfff2dd,2.1);key.position.set(4,2,5);scene.add(key);
+const fill=new THREE.DirectionalLight(0xdfe6da,.6);fill.position.set(-4,-1,-2);scene.add(fill);
+const globeGroup=new THREE.Group();scene.add(globeGroup);
+const R=1.6;
+function latLon(lat,lon,r){const phi=(90-lat)*Math.PI/180,theta=(lon+180)*Math.PI/180;return new THREE.Vector3(-r*Math.sin(phi)*Math.cos(theta),r*Math.cos(phi),r*Math.sin(phi)*Math.sin(theta));}
+/* base paper sphere */
+const baseMat=new THREE.MeshStandardMaterial({color:0xEFE8D6,roughness:.95,metalness:0});
+const base=new THREE.Mesh(new THREE.SphereGeometry(R,96,96),baseMat);globeGroup.add(base);
+/* editorial earth: load + recolor */
+new THREE.TextureLoader().setCrossOrigin('anonymous').load('https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg',tex=>{
+tex.colorSpace=THREE.SRGBColorSpace;
+const c=document.createElement('canvas');c.width=1024;c.height=512;const x=c.getContext('2d',{willReadFrequently:true});
+const im=new Image();im.crossOrigin='anonymous';im.src=tex.image.src;
+im.onload=()=>{
+x.drawImage(im,0,0,1024,512);
+try{
+const d=x.getImageData(0,0,1024,512),p=d.data;
+for(let i=0;i<p.length;i+=4){const r=p[i],g=p[i+1],b=p[i+2];
+const ocean=b>r*1.08&&b>g*1.02;
+if(ocean){p[i]=239;p[i+1]=232;p[i+2]=214;}
+else{const l=(r+g+b)/3;const t=Math.min(1,Math.max(0,(l-40)/140));
+p[i]=34+t*52;p[i+1]=31+t*48;p[i+2]=26+t*38;}}
+x.putImageData(d,0,0);
+const t2=new THREE.CanvasTexture(c);t2.colorSpace=THREE.SRGBColorSpace;
+baseMat.map=t2;baseMat.color.set(0xffffff);baseMat.needsUpdate=true;
+}catch(e){}
+};
+},undefined,()=>{});
+/* graticule */
+(function(){
+const pts=[];for(let la=-60;la<=60;la+=20){for(let lo=0;lo<360;lo+=4){pts.push(latLon(la,lo,R+0.002),latLon(la,lo+4,R+0.002));}}
+for(let lo=0;lo<360;lo+=20){for(let la=-60;la<60;la+=4){pts.push(latLon(la,lo,R+0.002),latLon(la+4,lo,R+0.002));}}
+const g=new THREE.BufferGeometry().setFromPoints(pts);
+globeGroup.add(new THREE.LineSegments(g,new THREE.LineBasicMaterial({color:0x1a1814,transparent:true,opacity:.12})));
+})();
+/* equator + tropics editorial */
+[[0,.22],[23.5,.12],[-23.5,.12]].forEach(([la,op])=>{const p=[];for(let lo=0;lo<=360;lo+=3)p.push(latLon(la,lo,R+0.003));const l=new THREE.Line(new THREE.BufferGeometry().setFromPoints(p),new THREE.LineBasicMaterial({color:0x9A3B26,transparent:true,opacity:op}));globeGroup.add(l);});
+/* atmosphere warm */
+(function(){const c=document.createElement('canvas');c.width=c.height=256;const x=c.getContext('2d');const gr=x.createRadialGradient(128,128,90,128,128,128);gr.addColorStop(0,'rgba(0,0,0,0)');gr.addColorStop(.82,'rgba(168,140,74,.18)');gr.addColorStop(1,'rgba(168,140,74,0)');x.fillStyle=gr;x.fillRect(0,0,256,256);const s=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c),transparent:true,depthWrite:false}));s.scale.set(5.4,5.4,1);scene.add(s);})();
+/* arcs relations */
+const arcMat=new THREE.LineBasicMaterial({color:0x9A3B26,transparent:true,opacity:.35});
+function arc(a,b){const A=latLon(a.lat,a.lon,R+0.01),B=latLon(b.lat,b.lon,R+0.01);const mid=A.clone().add(B).multiplyScalar(.5).normalize().multiplyScalar(R+0.35);const cur=new THREE.QuadraticBezierCurve3(A,mid,B);const pts=cur.getPoints(60);globeGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),arcMat));}
+[[0,1],[0,4],[1,3],[2,7],[4,5],[6,2],[3,1]].forEach(([a,b])=>arc(DEST[a],DEST[b]));
+/* markers */
+const markers=[];
+DEST.forEach((d,i)=>{
+const g=new THREE.Group();const pos=latLon(d.lat,d.lon,R);
+const dot=new THREE.Mesh(new THREE.SphereGeometry(.022,16,16),new THREE.MeshBasicMaterial({color:0x9A3B26}));g.add(dot);
+const ring=new THREE.Mesh(new THREE.RingGeometry(.035,.042,32),new THREE.MeshBasicMaterial({color:0x9A3B26,transparent:true,opacity:.7,side:THREE.DoubleSide}));ring.lookAt(pos.clone().multiplyScalar(2));g.add(ring);
+const stem=new THREE.Mesh(new THREE.CylinderGeometry(.003,.003,.18,8),new THREE.MeshBasicMaterial({color:0x9A3B26,transparent:true,opacity:.5}));stem.position.copy(pos.clone().normalize().multiplyScalar(.09));stem.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),pos.clone().normalize());g.add(stem);
+g.position.copy(pos);g.userData={ring,idx:i};globeGroup.add(g);markers.push(g);
+const lab=document.createElement('div');lab.className='map-label';lab.innerHTML=`<b class="dot"></b>${d.city} · ${d.cat}`;lab.onclick=e=>{e.stopPropagation();selectDest(i,true);};labelsBox.appendChild(lab);d._lab=lab;
+});
+/* interaction orbit */
+let tRy=.6,tRx=.25,cRy=.6,cRx=.25,tDist=4.4,cDist=4.4,drag=false,px=0,py=0,lastAct=0,auto=true;
+function resize(){const w=wrap.clientWidth,h=wrap.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}
+addEventListener('resize',resize);resize();
+canvas.addEventListener('pointerdown',e=>{drag=true;px=e.clientX;py=e.clientY;canvas.setPointerCapture(e.pointerId);lastAct=Date.now();});
+canvas.addEventListener('pointermove',e=>{if(!drag)return;const dx=e.clientX-px,dy=e.clientY-py;px=e.clientX;py=e.clientY;tRy+=dx*.005;tRx=Math.max(-.9,Math.min(.9,tRx+dy*.003));lastAct=Date.now();});
+addEventListener('pointerup',()=>drag=false);
+wrap.addEventListener('wheel',e=>{
+const max=4.6,min=2.0;
+if(e.deltaY>0){if(cDist<max-.05){e.preventDefault();tDist=Math.min(max,tDist+e.deltaY*.0022);const l=Math.round((tDist-min)/(max-min)*7);setLevelQuiet(l);}}
+else{if(window.scrollY<window.innerHeight*.7&&cDist>min+.05){e.preventDefault();tDist=Math.max(min,tDist+e.deltaY*.0022);const l=Math.round((tDist-min)/(max-min)*7);setLevelQuiet(l);}}
+lastAct=Date.now();
+},{passive:false});
+function setLevelQuiet(i){curLevel=Math.max(0,Math.min(7,i));document.querySelectorAll('#levels-bar .lvl').forEach((b,bi)=>{b.classList.toggle('active',bi===curLevel);b.classList.toggle('done',bi<curLevel);});document.getElementById('zoom').value=curLevel;document.getElementById('zoom-lab').textContent='Niv.'+curLevel;}
+window._flyTo=(lat,lon,dist=2.3)=>{const v=latLon(lat,lon,R);let ry=Math.atan2(-v.x,v.z);let rx=lat*Math.PI/180*.9;
+while(ry-tRy>Math.PI)tRy+=Math.PI*2;while(ry-tRy<-Math.PI)tRy-=Math.PI*2;
+tRy=ry+(tRy-ry)*0+ry*0+ry; // target
+// shortest: keep continuity
+let d=ry-tRy; // ry computed, tRy old
+// recompute correctly:
+tRy+=d; tRx=Math.max(-.7,Math.min(.7,rx)); tDist=dist;lastAct=Date.now();};
+window.flyToLevel=l=>{
+const map=[4.4,3.4,2.9,2.6,2.35,2.15,2.05,1.98];
+tDist=map[l]||4.4;
+if(curDest!=null&&l>=2){const d=DEST[curDest];const v=latLon(d.lat,d.lon,R);let ry=Math.atan2(-v.x,v.z);let dlt=ry-tRy;while(dlt>Math.PI){tRy+=Math.PI*2;dlt=ry-tRy;}while(dlt<-Math.PI){tRy-=Math.PI*2;dlt=ry-tRy;}tRy+=dlt;}
+lastAct=Date.now();
+};
+/* raycast markers */
+const ray=new THREE.Raycaster(),mv=new THREE.Vector2();
+canvas.addEventListener('click',e=>{
+const r=canvas.getBoundingClientRect();mv.x=((e.clientX-r.left)/r.width)*2-1;mv.y=-((e.clientY-r.top)/r.height)*2+1;
+ray.setFromCamera(mv,camera);const hits=ray.intersectObjects(markers,true);
+if(hits.length){let o=hits[0].object;while(o&&o.userData.idx===undefined)o=o.parent;if(o)selectDest(o.userData.idx,true);}
+});
+/* voyage */
+let voyaging=false;
+function voyage(){
+if(voyaging)return;voyaging=true;window.scrollTo({top:0,behavior:'smooth'});
+let i=0;selectDest(0,true);
+const step=()=>{if(i>=DEST.length){voyaging=false;return;}selectDest(i,true);setLevelQuiet(4);i++;setTimeout(step,4200);};setTimeout(step,1200);
+}
+document.getElementById('btn-voyage').onclick=voyage;document.getElementById('btn-voyage2').onclick=voyage;
+/* loop */
+const clk=new THREE.Clock();const tmp=new THREE.Vector3();
+function tick(){
+requestAnimationFrame(tick);
+const t=clk.getElapsedTime();
+if(!drag&&Date.now()-lastAct>5000)tRy+=.0016;
+cRy+=(tRy-cRy)*.06;cRx+=(tRx-cRx)*.06;cDist+=(tDist-cDist)*.07;
+globeGroup.rotation.y=cRy;globeGroup.rotation.x=cRx;camera.position.z=cDist;
+markers.forEach((m,i)=>{const s=1+Math.sin(t*2+i)*.18;m.userData.ring.scale.set(s,s,s);
+tmp.copy(m.position).applyMatrix4(globeGroup.matrixWorld).normalize();
+const vis=tmp.z>.18;const d=DEST[i]._lab;
+if(vis){const p=m.position.clone().applyMatrix4(globeGroup.matrixWorld).project(camera);
+const w=wrap.clientWidth,h=wrap.clientHeight;
+d.style.left=((p.x*.5+.5)*w)+'px';d.style.top=((-p.y*.5+.5)*h)+'px';d.style.opacity=1;d.style.pointerEvents='auto';}
+else{d.style.opacity=0;d.style.pointerEvents='none';}});
+renderer.render(scene,camera);
+}
+tick();selectDest(0,false);
+/* reveal on scroll */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+<script>
+window.addEventListener('load',()=>{setTimeout(()=>{var l=document.getElementById('loader');if(l)l.classList.add('hide')},2200)});
+</script>
+</body>
+</html>
